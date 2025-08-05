@@ -1,5 +1,8 @@
 spring:
-  profiles: preprod
+  config:
+    activate:
+      on-profile: preprod
+
   datasource:
     url: jdbc:postgresql://localhost:5432/tsinjo_preprod
     username: postgres
