@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+  flyway:
+    enabled: true
+    locations:
+      - classpath:db/migration
+
+tsinjo:
+  vola:
+    base-url: "https://42cwka3n4ifcp7ufheyrpmph240iuaxo.lambda-url.eu-west-3.on.aws/v3"

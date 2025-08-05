@@ -1,0 +1,11 @@
+spring:
+  profiles: prod
+  datasource:
+    url: jdbc:postgresql://localhost:5432/tsinjo_prod
+    username: postgres
+    password: hiratrasql
+
+tsinjo:
+  vola:
+    api:
+      key: "PROD_VOLA_API_KEY"

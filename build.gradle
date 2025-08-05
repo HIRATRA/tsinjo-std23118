@@ -9,18 +9,13 @@ plugins {
     id 'org.openapi.generator' version '7.7.0'
 
     id 'jacoco'
-
-    
 }
 
 jacoco {
     toolVersion = "0.8.11"
 }
 
-
-
 repositories {
-
     mavenCentral()
 }
 
@@ -35,8 +30,6 @@ configurations {
         extendsFrom annotationProcessor
     }
 }
-
-
 
 test {
     maxParallelForks = Runtime.runtime.availableProcessors().intdiv(2) ?: 1
@@ -108,13 +101,19 @@ jacocoTestReport {
 }
 
 dependencies {
+    // Spring / Web / Thymeleaf / JDBC / Flyway / WebFlux
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'   // Thymeleaf
+    implementation 'org.springframework.boot:spring-boot-starter-jdbc'        // JdbcTemplate & DataSource auto-config
+    implementation 'org.flywaydb:flyway-core'                                // Flyway
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'     // WebClient (non-blocking)
 
+    // JSON / date-time
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
 
+    // AWS / Lambda libs (kept from your original)
     implementation 'com.amazonaws.serverless:aws-serverless-java-container-springboot3:2.1.0'
     implementation 'software.amazon.awssdk:aws-query-protocol:2.20.26'
-
     implementation 'com.amazonaws:aws-lambda-java-core:1.2.3'
     implementation 'com.amazonaws:aws-lambda-java-events:3.11.3'
     implementation 'software.amazon.awssdk:sqs:2.21.40'
@@ -123,27 +122,38 @@ dependencies {
     implementation 'software.amazon.awssdk:ses:2.21.40'
     implementation 'software.amazon.awssdk:core:2.21.40'
 
+    // Mail / Tika / Reflections / Swagger
     implementation 'jakarta.mail:jakarta.mail-api:2.1.2'
     implementation 'jakarta.activation:jakarta.activation-api:2.1.2'
     implementation 'com.sun.mail:jakarta.mail:2.0.1'
     implementation 'com.sun.activation:jakarta.activation:2.0.1'
-
     implementation 'org.apache.tika:tika-core:2.9.1'
-
     implementation 'org.reflections:reflections:0.10.2'
+    implementation 'org.openapitools:jackson-databind-nullable:0.2.6'
+    implementation 'io.swagger:swagger-annotations:1.6.12'
 
+    // OpenAPI generator
+    // (kept the openapi plugin in plugins block; tasks can be configured separately if needed)
+
+    // PostgreSQL driver
+    implementation "org.postgresql:postgresql:42.7.5"
+
+    // Lombok
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
     testCompileOnly 'org.projectlombok:lombok'
     testAnnotationProcessor 'org.projectlombok:lombok'
 
-    implementation 'org.openapitools:jackson-databind-nullable:0.2.6'
-    implementation 'io.swagger:swagger-annotations:1.6.12'
-
+    // Testing
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.testcontainers:junit-jupiter:1.19.1'
     testImplementation 'org.junit-pioneer:junit-pioneer:2.2.0'
+}
 
-
-
+// ===== Fix pour bootRun : choisir la MainClass explicitement =====
+tasks.named('bootRun', org.springframework.boot.gradle.tasks.run.BootRun) {
+    // Remplace par la classe que tu veux lancer
+    mainClass.set('hei.school.demo.TsinjoApplication')
+    // Si tu veux fournir le profile par défaut ici, tu peux décommenter la ligne suivante :
+    // args = ['--spring.profiles.active=preprod']
 }
